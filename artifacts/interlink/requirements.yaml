@@ -1,0 +1,14 @@
+packages:
+  "framer-motion": "For complex scroll animations, 3D flips, and GUFRAM-style floating elements"
+  "date-fns": "For formatting post dates nicely"
+  "clsx": "For conditional tailwind classes"
+  "tailwind-merge": "For merging tailwind classes safely in UI components"
+
+images:
+  - path: "artifacts/interlink/public/images/hero-illustration.png"
+    description: "A beautiful, modern, 3D abstract illustration representing career growth, connection, and networking. Features colorful intersecting paths, nodes, and subtle tech elements in a vibrant, premium aesthetic with soft lighting. Colors: Indigo, Pink, Teal, Orange."
+    aspect_ratio: "16:9"
+
+notes:
+  - App is entirely client-side, using localStorage for persistence.
+  - No external API calls are made. React Query is used with localStorage as the data source to maintain reactivity across components.
