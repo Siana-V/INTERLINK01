@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "pnpm run typecheck && pnpm --filter @workspace/interlink --filter @workspace/api-server run build",
+  "buildCommand": "pnpm --filter @workspace/interlink run build && pnpm --filter @workspace/api-server run build",
   "outputDirectory": "artifacts/interlink/dist",
   "installCommand": "pnpm install",
   "functions": {
