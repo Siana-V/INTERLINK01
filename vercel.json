@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "pnpm install --frozen-lockfile && pnpm --filter @workspace/interlink run build",
+  "framework": null,
+  "buildCommand": "pnpm --filter @workspace/interlink run build",
   "outputDirectory": "artifacts/interlink/dist/public",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index" }
