@@ -6,27 +6,27 @@ import { useEffect, useState } from "react";
 const features = [
   {
     title: "1-on-1 Mentorship",
-    image: "https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&q=80&w=800",
+    image: "/images/mentorship.png",
   },
   {
     title: "Industry Insights",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
+    image: "/images/insights.png",
   },
   {
     title: "Networking Events",
-    image: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800",
+    image: "/images/events.png",
   },
   {
     title: "Career Growth",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
+    image: "/images/career.png",
   },
   {
     title: "Portfolio Reviews",
-    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=800",
+    image: "/images/portfolio.png",
   },
   {
     title: "Skill Verification",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800",
+    image: "/images/skills.png",
   },
 ];
 
