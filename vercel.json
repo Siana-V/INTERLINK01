@@ -1,9 +1,21 @@
 {
   "version": 2,
-  "framework": null,
-  "buildCommand": "pnpm --filter @workspace/interlink run build",
-  "outputDirectory": "artifacts/interlink/dist/public",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/index" }
+  "builds": [
+    {
+      "src": "artifacts/interlink/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/public"
+      }
+    },
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.ts" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
