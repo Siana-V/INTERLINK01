@@ -1,6 +1,5 @@
 // Vercel serverless function entry point.
-// Vercel auto-detects files in /api and serves them as functions.
-// All /api/* requests are routed here via vercel.json rewrites.
+// Import the Express app directly (don't use the built version that calls listen())
 import app from "../artifacts/api-server/src/app";
 
 export default app;
