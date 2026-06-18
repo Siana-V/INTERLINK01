@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "pnpm install && pnpm --filter @workspace/interlink run build && pnpm --filter @workspace/api-server run build",
-  "outputDirectory": "artifacts/interlink/dist",
+  "outputDirectory": "public",
   "installCommand": "pnpm install",
   "functions": {
     "api/index.ts": {
