@@ -44,6 +44,14 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "..", "..", "public"),
     emptyOutDir: true,
+    sourcemap: false,
+    rollupOptions: {
+      onLog(level, log) {
+        if (log.message.includes("sourcemap")) {
+          return;
+        }
+      },
+    },
   },
   server: {
     port,
