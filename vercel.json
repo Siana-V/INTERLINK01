@@ -2,7 +2,6 @@
   "version": 2,
   "buildCommand": "pnpm --filter @workspace/interlink run build && pnpm --filter @workspace/api-server run build",
   "installCommand": "pnpm install",
-  "public": "public",
   "functions": {
     "api/index.ts": {
       "runtime": "nodejs20.x"
