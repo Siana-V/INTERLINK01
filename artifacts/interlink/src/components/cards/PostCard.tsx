@@ -1,15 +1,20 @@
+import { useTranslation } from "@/lib/i18n";
 import { useState } from "react";
 import { Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Post } from "@/hooks/use-interlink";
 import { useToggleLike, useStudentLikes, useRole } from "@/hooks/use-interlink";
+import { useToast } from "@/hooks/use-toast";
 
 export function PostCard({ post, isExpanded = false }: { post: Post; isExpanded?: boolean }) {
+  const { t } = useTranslation();
+
   const [expanded, setExpanded] = useState(isExpanded);
   const { data: likes = {} } = useStudentLikes();
   const toggleLike = useToggleLike();
   const { role } = useRole();
+  const { toast } = useToast();
   
   const isLiked = !!likes[post.id];
   const dateFormatted = post.date ? format(parseISO(post.date), 'MMM d, yyyy') : '';
@@ -34,7 +39,7 @@ export function PostCard({ post, isExpanded = false }: { post: Post; isExpanded?
             </div>
             <div>
               <h4 className="font-bold text-foreground leading-none">{post.author}</h4>
-              <p className="text-xs text-muted-foreground mt-1">{post.domain} • {dateFormatted}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t(`dom_${post.domain.toLowerCase().replace(/ /g, '_')}` as any, post.domain)} • {dateFormatted}</p>
             </div>
           </div>
           <button className="text-muted-foreground hover:bg-muted p-2 rounded-full transition-colors">
@@ -49,7 +54,7 @@ export function PostCard({ post, isExpanded = false }: { post: Post; isExpanded?
         </div>
         
         {!expanded && post.content.length > 150 && (
-          <button className="text-primary text-sm font-semibold mt-2 hover:underline">Read more</button>
+          <button className="text-primary text-sm font-semibold mt-2 hover:underline">{t("rev_read_more", "Read more")}</button>
         )}
       </div>
 
@@ -58,7 +63,7 @@ export function PostCard({ post, isExpanded = false }: { post: Post; isExpanded?
           onClick={handleLike}
           className={`flex items-center gap-2 text-sm font-medium transition-colors ${isLiked && role === 'student' ? 'text-secondary' : 'text-muted-foreground hover:text-secondary'}`}
           disabled={role !== "student"}
-          title={role !== "student" ? "Only students can like posts" : ""}
+          title={role !== "student" ? t("rev_student_only_like", "Only students can like posts") : ""}
         >
           <motion.div
             whileTap={{ scale: 0.8 }}
@@ -69,11 +74,34 @@ export function PostCard({ post, isExpanded = false }: { post: Post; isExpanded?
           </motion.div>
           <span>{post.likes}</span>
         </button>
-        <button className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!expanded) {
+              setExpanded(true);
+            } else {
+              toast({
+                title: t("rev_coming_soon", "Coming Soon"),
+                description: t("rev_discuss_desc", "The comments and discussion feature is under development."),
+              });
+            }
+          }}
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+        >
           <MessageCircle className="w-5 h-5" />
-          <span>Discuss</span>
+          <span>{t("rev_click_discuss", "Discuss")}</span>
         </button>
-        <button className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors ml-auto">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            navigator.clipboard.writeText(window.location.href);
+            toast({
+              title: t("rev_link_copied", "Link Copied"),
+              description: t("rev_copied_desc", "Link copied to clipboard!"),
+            });
+          }}
+          className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors ml-auto"
+        >
           <Share2 className="w-5 h-5" />
         </button>
       </div>

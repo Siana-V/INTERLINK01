@@ -1,17 +1,30 @@
+import { useTranslation } from "@/lib/i18n";
 import { useRoute } from "wouter";
+import { useEffect } from "react";
 import { useProfessional, usePosts } from "@/hooks/use-interlink";
 import { PostCard } from "@/components/cards/PostCard";
-import { MapPin, Clock, Briefcase, MessageCircle, ArrowLeft, Mail } from "lucide-react";
-import { Link } from "wouter";
+import {
+  ArrowLeft, Star, Heart, MessageSquare,
+  Briefcase, GraduationCap, MapPin,
+  Linkedin, Twitter, Globe, Mail, Clock, MessageCircle
+} from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 
 export function ProfessionalDetails() {
+  const { t } = useTranslation();
+
   const [, params] = useRoute("/student/professional/:id");
   const id = params?.id || "";
-  
+
   const { data: professional, isLoading } = useProfessional(id);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { data: allPosts = [] } = usePosts();
-  
+
   const professionalPosts = allPosts.filter(p => p.professionalId === id);
 
   if (isLoading) {
@@ -21,8 +34,8 @@ export function ProfessionalDetails() {
   if (!professional) {
     return (
       <div className="min-h-screen pt-32 text-center">
-        <h1 className="text-2xl font-bold">Professional not found</h1>
-        <Link href="/student/connect" className="text-primary mt-4 inline-block">Back to Connect</Link>
+        <h1 className="text-2xl font-bold">{t("loading")}</h1>
+        <Link href="/student/connect" className="text-primary mt-4 inline-block">{t("prof_back", "Back to Home")}</Link>
       </div>
     );
   }
@@ -41,8 +54,8 @@ export function ProfessionalDetails() {
       </div>
       
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative -mt-32">
-        <Link href="/student/connect" className="inline-flex items-center text-white/80 hover:text-white font-medium mb-6 transition-colors drop-shadow-md">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Back to Directory
+        <Link href="/student#professionals" className="inline-flex items-center text-white/80 hover:text-white font-medium mb-6 transition-colors drop-shadow-md group">
+          <ArrowLeft className="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" /> {t("prof_back", "Back to Home")}
         </Link>
         
         {/* Main Profile Card */}
@@ -66,7 +79,7 @@ export function ProfessionalDetails() {
               <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 w-full">
                 <div>
                   <h1 className="text-3xl md:text-4xl font-bold font-display text-foreground">{professional.name}</h1>
-                  <p className="text-xl text-primary font-medium mt-1">{professional.domain}</p>
+                  <p className="text-xl text-primary font-medium mt-1">{t(`dom_${professional.domain.toLowerCase().replace(/ /g, '_')}` as any, professional.domain)}</p>
                 </div>
                 
                 <button 
@@ -74,14 +87,14 @@ export function ProfessionalDetails() {
                   className="w-full md:w-auto px-8 py-4 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-lg flex items-center justify-center gap-2 shadow-lg shadow-green-500/30 hover:shadow-xl transition-all hover:-translate-y-1"
                 >
                   <MessageCircle className="w-6 h-6" />
-                  WhatsApp Me
+                  {t("prof_whatsapp", "WhatsApp Me")}
                 </button>
               </div>
               
               <div className="grid sm:grid-cols-2 gap-4 mt-8 pt-8 border-t border-border">
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <Briefcase className="w-5 h-5 text-primary" />
-                  <span><strong className="text-foreground">{professional.company}</strong> • {professional.experience} exp</span>
+                  <span><strong className="text-foreground">{professional.company}</strong> • {professional.experience.replace("years", t("exp_years")).replace("year", t("exp_year"))} {t("exp_label", "Experience")}</span>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <MapPin className="w-5 h-5 text-accent" />
@@ -89,7 +102,7 @@ export function ProfessionalDetails() {
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <Clock className="w-5 h-5 text-secondary" />
-                  <span>Active hours: {professional.timings}</span>
+                  <span>{t("prof_timings", "Active hours")}: {professional.timings}</span>
                 </div>
                 <div className="flex items-center gap-3 text-muted-foreground">
                   <Mail className="w-5 h-5 text-orange-400" />
@@ -102,7 +115,7 @@ export function ProfessionalDetails() {
         
         {/* Posts Section */}
         <div>
-          <h2 className="text-3xl font-bold font-display mb-8">Posts by {professional.name.split(' ')[0]}</h2>
+          <h2 className="text-3xl font-bold font-display mb-8">{t("prof_related_posts", "Posts by")} {professional.name.split(' ')[0]}</h2>
           
           {professionalPosts.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-8">
@@ -112,7 +125,7 @@ export function ProfessionalDetails() {
             </div>
           ) : (
             <div className="bg-card border border-border rounded-2xl p-12 text-center">
-              <p className="text-muted-foreground text-lg">This professional hasn't published any posts yet.</p>
+              <p className="text-muted-foreground text-lg">{t("prof_no_posts", "This professional hasn't published any posts yet.")}</p>
             </div>
           )}
         </div>

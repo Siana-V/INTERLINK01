@@ -1,3 +1,4 @@
+import { useTranslation } from "@/lib/i18n";
 import { useState, useEffect } from "react";
 import { useCurrentUser, useUpdateProfile } from "@/hooks/use-interlink";
 import { FloatingBlobs } from "@/components/ui/FloatingBlobs";
@@ -5,6 +6,8 @@ import { Save, User, Briefcase, MapPin, Clock, MessageCircle } from "lucide-reac
 import { motion } from "framer-motion";
 
 export function IndustryProfile() {
+  const { t } = useTranslation();
+
   const { data: currentUser, isLoading } = useCurrentUser();
   const updateProfile = useUpdateProfile();
   
@@ -80,7 +83,7 @@ export function IndustryProfile() {
                 </h3>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-muted-foreground">Full Name</label>
+                  <label className="text-sm font-bold text-muted-foreground">{t("ind_profile_name", "Full Name")}</label>
                   <input 
                     required type="text" 
                     value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
@@ -89,7 +92,7 @@ export function IndustryProfile() {
                 </div>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-muted-foreground">WhatsApp Number</label>
+                  <label className="text-sm font-bold text-muted-foreground">{t("ind_profile_whatsapp", "WhatsApp Number")}</label>
                   <div className="relative">
                     <MessageCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                     <input 
@@ -109,7 +112,7 @@ export function IndustryProfile() {
                 </h3>
                 
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-muted-foreground">Company</label>
+                  <label className="text-sm font-bold text-muted-foreground">{t("ind_profile_company", "Company")}</label>
                   <input 
                     required type="text" 
                     value={formData.company} onChange={e => setFormData({...formData, company: e.target.value})}
@@ -119,7 +122,7 @@ export function IndustryProfile() {
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-muted-foreground">Domain</label>
+                    <label className="text-sm font-bold text-muted-foreground">{t("ind_profile_domain", "Domain")}</label>
                     <input 
                       required type="text" 
                       value={formData.domain} onChange={e => setFormData({...formData, domain: e.target.value})}
@@ -127,7 +130,7 @@ export function IndustryProfile() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold text-muted-foreground">Experience</label>
+                    <label className="text-sm font-bold text-muted-foreground">{t("prof_experience", "Experience")}</label>
                     <input 
                       required type="text" 
                       value={formData.experience} onChange={e => setFormData({...formData, experience: e.target.value})}
@@ -148,7 +151,7 @@ export function IndustryProfile() {
               <div className="grid md:grid-cols-2 gap-8">
                 <div className="space-y-2">
                   <label className="text-sm font-bold text-muted-foreground flex items-center gap-2">
-                     Office Address
+                     {t("ind_profile_address", "Office Address")}
                   </label>
                   <input 
                     required type="text" 
@@ -173,7 +176,7 @@ export function IndustryProfile() {
 
             <div className="pt-8 border-t border-border flex justify-between items-center">
               <div>
-                {saved && <span className="text-green-500 font-bold animate-pulse">Changes saved successfully!</span>}
+                {saved && <span className="text-green-500 font-bold animate-pulse">{t("ind_profile_saved", "Changes saved successfully!")}</span>}
               </div>
               <button 
                 type="submit"
@@ -181,7 +184,7 @@ export function IndustryProfile() {
                 className="px-8 py-4 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/30 hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center gap-2 disabled:opacity-70"
               >
                 <Save className="w-5 h-5" />
-                {updateProfile.isPending ? "Saving..." : "Save Profile"}
+                {updateProfile.isPending ? t("loading", "Saving...") : t("ind_profile_save", "Save Profile")}
               </button>
             </div>
           </form>

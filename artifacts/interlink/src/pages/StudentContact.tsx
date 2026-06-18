@@ -1,8 +1,11 @@
+import { useTranslation } from "@/lib/i18n";
 import { useState } from "react";
 import { FloatingBlobs } from "@/components/ui/FloatingBlobs";
 import { Send, CheckCircle2 } from "lucide-react";
 
 export function StudentContact() {
+  const { t } = useTranslation();
+
   const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -32,14 +35,14 @@ export function StudentContact() {
               <div className="w-20 h-20 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mb-6">
                 <CheckCircle2 className="w-10 h-10" />
               </div>
-              <h2 className="text-3xl font-bold mb-2">Message Sent!</h2>
-              <p className="text-muted-foreground text-lg">We'll get back to you as soon as possible.</p>
+              <h2 className="text-3xl font-bold mb-2">{t("contact_success_title", "Message Sent!")}</h2>
+              <p className="text-muted-foreground text-lg">{t("contact_success_desc", "We'll get back to you as soon as possible.")}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground">Your Name</label>
+                  <label className="text-sm font-bold text-foreground">{t("contact_name", "Your Name")}</label>
                   <input 
                     required
                     type="text" 
@@ -48,7 +51,7 @@ export function StudentContact() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground">Email Address</label>
+                  <label className="text-sm font-bold text-foreground">{t("contact_email", "Email Address")}</label>
                   <input 
                     required
                     type="email" 
@@ -59,7 +62,7 @@ export function StudentContact() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-bold text-foreground">Message</label>
+                <label className="text-sm font-bold text-foreground">{t("contact_message", "Message")}</label>
                 <textarea 
                   required
                   rows={6}
@@ -73,7 +76,7 @@ export function StudentContact() {
                 disabled={status === "submitting"}
                 className="w-full py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-primary to-accent text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {status === "submitting" ? "Sending..." : "Send Message"}
+                {status === "submitting" ? t("loading", "Sending...") : t("contact_send", "Send Message")}
                 <Send className="w-5 h-5" />
               </button>
             </form>

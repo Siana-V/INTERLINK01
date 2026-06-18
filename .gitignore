@@ -47,3 +47,11 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Backups and temporary files
+.git 2/
+scripts.zip
+video
+.env*
+
+

@@ -1,3 +1,4 @@
+import { useTranslation } from "@/lib/i18n";
 import { useState } from "react";
 import { usePosts, useCurrentUser, useCreatePost, useUpdatePost, useDeletePost } from "@/hooks/use-interlink";
 import { FloatingBlobs } from "@/components/ui/FloatingBlobs";
@@ -6,6 +7,8 @@ import { format, parseISO } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function IndustryPosts() {
+  const { t } = useTranslation();
+
   const { data: currentUser } = useCurrentUser();
   const { data: allPosts = [] } = usePosts();
   const createPost = useCreatePost();
@@ -52,7 +55,7 @@ export function IndustryPosts() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this post?")) {
+    if (confirm(t("ind_posts_delete_confirm", "Are you sure you want to delete this post?"))) {
       deletePost.mutate(id);
     }
   };
@@ -64,15 +67,15 @@ export function IndustryPosts() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold font-display mb-4">Manage <span className="text-gradient">Posts</span></h1>
-            <p className="text-lg text-muted-foreground">Share your knowledge with students.</p>
+            <h1 className="text-4xl md:text-5xl font-bold font-display mb-4">{t("ind_posts_manage_title", "Manage")} <span className="text-gradient">{t("nav_manage_posts", "Posts")}</span></h1>
+            <p className="text-lg text-muted-foreground">{t("ind_posts_manage_subtitle", "Share your knowledge with students.")}</p>
           </div>
           
           <button 
             onClick={() => openForm()}
             className="px-6 py-3 rounded-xl bg-primary text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all flex items-center gap-2"
           >
-            <Plus className="w-5 h-5" /> New Post
+            <Plus className="w-5 h-5" /> {t("ind_posts_new_btn", "New Post")}
           </button>
         </div>
 
@@ -94,7 +97,7 @@ export function IndustryPosts() {
                 className="bg-card w-full max-w-2xl rounded-3xl shadow-2xl border border-border p-8 relative z-10"
               >
                 <div className="flex justify-between items-center mb-6 border-b border-border pb-4">
-                  <h2 className="text-2xl font-bold font-display">{editingId ? 'Edit Post' : 'Create New Post'}</h2>
+                  <h2 className="text-2xl font-bold font-display">{editingId ? t("ind_posts_edit_title", "Edit Post") : t("ind_posts_create_title", "Create New Post")}</h2>
                   <button onClick={() => setIsFormOpen(false)} className="p-2 bg-muted rounded-full hover:bg-muted-foreground/20 transition-colors">
                     <X className="w-5 h-5" />
                   </button>
@@ -102,7 +105,7 @@ export function IndustryPosts() {
                 
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-bold mb-2">Post Title</label>
+                    <label className="block text-sm font-bold mb-2">{t("ind_posts_title_label", "Post Title")}</label>
                     <input 
                       required
                       type="text" 
@@ -113,7 +116,7 @@ export function IndustryPosts() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold mb-2">Content</label>
+                    <label className="block text-sm font-bold mb-2">{t("ind_posts_content_label", "Content")}</label>
                     <textarea 
                       required
                       rows={8}
@@ -129,8 +132,8 @@ export function IndustryPosts() {
                       disabled={createPost.isPending || updatePost.isPending}
                       className="px-8 py-3 rounded-xl bg-primary text-white font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
                     >
-                      {(createPost.isPending || updatePost.isPending) ? "Saving..." : (
-                        <><Send className="w-4 h-4" /> Publish</>
+                      {(createPost.isPending || updatePost.isPending) ? t("loading", "Saving...") : (
+                        <><Send className="w-4 h-4" /> {t("ind_posts_publish", "Publish")}</>
                       )}
                     </button>
                   </div>
@@ -145,7 +148,7 @@ export function IndustryPosts() {
           <AnimatePresence>
             {myPosts.length === 0 ? (
               <div className="text-center py-20 bg-card rounded-3xl border border-border">
-                <p className="text-muted-foreground text-lg">You haven't created any posts yet.</p>
+                <p className="text-muted-foreground text-lg">{t("ind_posts_empty", "You haven't created any posts yet.")}</p>
               </div>
             ) : (
               myPosts.map(post => (
@@ -166,10 +169,10 @@ export function IndustryPosts() {
                     
                     <div className="flex items-center gap-6 text-sm font-medium">
                       <div className="flex items-center gap-2 text-secondary">
-                        <Heart className="w-5 h-5 fill-current" /> {post.likes} Likes
+                        <Heart className="w-5 h-5 fill-current" /> {post.likes} {t("ind_posts_likes", "Likes")}
                       </div>
                       <div className="flex items-center gap-2 text-primary">
-                        <Users className="w-5 h-5" /> {post.likedByStudents?.length || 0} Students Reached
+                        <Users className="w-5 h-5" /> {post.likedByStudents?.length || 0} {t("ind_stats_students", "Students Reached")}
                       </div>
                     </div>
                   </div>
@@ -179,13 +182,13 @@ export function IndustryPosts() {
                       onClick={() => openForm(post)}
                       className="flex-1 md:flex-none px-4 py-2 bg-muted text-foreground font-semibold rounded-xl flex items-center justify-center gap-2 hover:bg-primary/10 hover:text-primary transition-colors"
                     >
-                      <Edit2 className="w-4 h-4" /> Edit
+                      <Edit2 className="w-4 h-4" /> {t("ind_posts_edit", "Edit")}
                     </button>
                     <button 
                       onClick={() => handleDelete(post.id)}
                       className="flex-1 md:flex-none px-4 py-2 bg-destructive/10 text-destructive font-semibold rounded-xl flex items-center justify-center gap-2 hover:bg-destructive hover:text-white transition-colors"
                     >
-                      <Trash2 className="w-4 h-4" /> Delete
+                      <Trash2 className="w-4 h-4" /> {t("ind_posts_delete", "Delete")}
                     </button>
                   </div>
                 </motion.div>

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { generateId } from "@/lib/utils";
+import { supabase } from "@/lib/supabase";
 
 export type Role = "student" | "industry" | null;
 
@@ -69,6 +70,21 @@ export function useProfessional(id: string) {
     queryFn: async (): Promise<Professional | null> => {
       // Special case for 'current' industry user profile viewing
       if (id === "current") {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          return {
+            id: user.id,
+            name: user.user_metadata?.full_name || user.email?.split('@')[0] || "Professional",
+            domain: user.user_metadata?.domain || "Technology",
+            region: "San Francisco, CA",
+            company: "Tech Corp",
+            experience: "5+ years",
+            whatsapp: "+1234567890",
+            address: "123 Innovation Dr",
+            timings: "9 AM - 5 PM",
+            avatar: null
+          };
+        }
         const data = localStorage.getItem("interlink_current_user");
         return data ? JSON.parse(data) : null;
       }
@@ -94,7 +110,26 @@ export function usePosts() {
 export function useCurrentUser() {
   return useQuery({
     queryKey: ["current_user"],
-    queryFn: async (): Promise<Professional> => {
+    queryFn: async (): Promise<Professional | null> => {
+      // 1. Fetch real session user from Supabase if available
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        return {
+          id: user.id,
+          name: user.user_metadata?.full_name || user.email?.split('@')[0] || "Professional",
+          domain: user.user_metadata?.domain || "Technology",
+          region: "San Francisco, CA", // Fallbacks for uncollected attributes
+          company: "Tech Corp",
+          experience: "5+ years",
+          whatsapp: "+1234567890",
+          address: "123 Innovation Dr",
+          timings: "9 AM - 5 PM",
+          avatar: null
+        };
+      }
+
+      // 2. Fallback to local mock data (e.g. 'Alex') if no real session exists
       const data = localStorage.getItem("interlink_current_user");
       return data ? JSON.parse(data) : null;
     },

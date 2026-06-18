@@ -1,3 +1,4 @@
+import { useTranslation } from "@/lib/i18n";
 import { Link } from "wouter";
 import { FloatingBlobs } from "@/components/ui/FloatingBlobs";
 import { usePosts, useCurrentUser } from "@/hooks/use-interlink";
@@ -6,6 +7,8 @@ import { Edit3, FileText, Heart, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function IndustryHome() {
+  const { t } = useTranslation();
+
   const { data: currentUser } = useCurrentUser();
   const { data: allPosts = [] } = usePosts();
   
@@ -16,7 +19,7 @@ export function IndustryHome() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* HERO SECTION */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-40 pb-20 overflow-hidden">
         <FloatingBlobs />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <motion.div 
@@ -34,11 +37,11 @@ export function IndustryHome() {
               )}
             </div>
             <h1 className="text-4xl md:text-6xl font-bold font-display mb-4">
-              Share Knowledge <br />
-              <span className="text-gradient-primary">Grow Your Network</span>
+              {t("ind_title_share", "Share Knowledge")} <br />
+              <span className="text-gradient-primary">{t("ind_title_grow", "Grow Your Network")}</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Welcome back, {currentUser?.name.split(' ')[0]}. You're helping shape the next generation of tech talent.
+              {t("ind_welcome_back", "Welcome back, ")}{currentUser?.name.split(' ')[0]}{t("ind_welcome_desc", ". You're helping shape the next generation of tech talent.")}
             </p>
           </motion.div>
         </div>
@@ -53,7 +56,7 @@ export function IndustryHome() {
             </div>
             <div>
               <p className="text-3xl font-bold">{myPosts.length}</p>
-              <p className="text-muted-foreground font-medium">Published Posts</p>
+              <p className="text-muted-foreground font-medium">{t("ind_stats_posts", "Published Posts")}</p>
             </div>
           </div>
           <div className="glass-panel p-8 rounded-3xl flex items-center gap-6">
@@ -62,7 +65,7 @@ export function IndustryHome() {
             </div>
             <div>
               <p className="text-3xl font-bold">{totalLikes}</p>
-              <p className="text-muted-foreground font-medium">Total Likes</p>
+              <p className="text-muted-foreground font-medium">{t("ind_stats_likes", "Total Likes")}</p>
             </div>
           </div>
           <div className="glass-panel p-8 rounded-3xl flex items-center gap-6">
@@ -71,7 +74,7 @@ export function IndustryHome() {
             </div>
             <div>
               <p className="text-3xl font-bold">{totalStudentsReached}</p>
-              <p className="text-muted-foreground font-medium">Students Reached</p>
+              <p className="text-muted-foreground font-medium">{t("ind_stats_students", "Students Reached")}</p>
             </div>
           </div>
         </div>
@@ -80,16 +83,16 @@ export function IndustryHome() {
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1 space-y-6">
             <div className="bg-card rounded-3xl p-6 border border-border shadow-sm">
-              <h3 className="text-xl font-bold mb-4 font-display">Quick Actions</h3>
+              <h3 className="text-xl font-bold mb-4 font-display">{t("ind_actions_title", "Quick Actions")}</h3>
               <div className="space-y-3">
                 <Link href="/industry/posts" className="w-full flex items-center justify-between p-4 rounded-xl bg-primary/5 hover:bg-primary/10 text-primary font-semibold transition-colors">
                   <div className="flex items-center gap-3">
-                    <Edit3 className="w-5 h-5" /> Write a Post
+                    <Edit3 className="w-5 h-5" /> {t("ind_action_write", "Write a Post")}
                   </div>
                 </Link>
                 <Link href="/industry/profile" className="w-full flex items-center justify-between p-4 rounded-xl bg-muted hover:bg-muted-foreground/10 text-foreground font-semibold transition-colors">
                   <div className="flex items-center gap-3">
-                    <Users className="w-5 h-5" /> Update Profile
+                    <Users className="w-5 h-5" /> {t("ind_action_profile", "Update Profile")}
                   </div>
                 </Link>
               </div>
@@ -98,8 +101,8 @@ export function IndustryHome() {
           
           <div className="lg:col-span-2">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold font-display">Recent Posts</h3>
-              <Link href="/industry/posts" className="text-primary font-bold hover:underline">View All</Link>
+              <h3 className="text-2xl font-bold font-display">{t("ind_recent_title", "Recent Posts")}</h3>
+              <Link href="/industry/posts" className="text-primary font-bold hover:underline">{t("see_all", "View All")}</Link>
             </div>
             
             {myPosts.length > 0 ? (
@@ -111,10 +114,10 @@ export function IndustryHome() {
             ) : (
               <div className="bg-card border border-dashed border-border rounded-3xl p-12 text-center">
                 <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                <h4 className="text-lg font-bold mb-2">No posts yet</h4>
-                <p className="text-muted-foreground mb-6">Share your first piece of advice with students.</p>
+                <h4 className="text-lg font-bold mb-2">{t("ind_no_posts", "No posts yet")}</h4>
+                <p className="text-muted-foreground mb-6">{t("ind_share_advice", "Share your first piece of advice with students.")}</p>
                 <Link href="/industry/posts" className="px-6 py-3 bg-primary text-white rounded-full font-bold inline-block">
-                  Create Post
+                  {t("ind_create_post", "Create Post")}
                 </Link>
               </div>
             )}

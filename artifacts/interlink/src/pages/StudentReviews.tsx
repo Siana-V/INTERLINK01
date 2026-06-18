@@ -1,15 +1,24 @@
+import { useTranslation } from "@/lib/i18n";
+import { useEffect } from "react";
 import { FloatingBlobs } from "@/components/ui/FloatingBlobs";
-import { Star } from "lucide-react";
+import { Star, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 
 export function StudentReviews() {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const reviews = [
-    { name: "Jessica T.", role: "CS Intern", text: "Connected with a Senior Engineer who helped me prep for my FAANG interview. I got the offer! The advice was incredibly specific and actionable.", rating: 5 },
-    { name: "Michael B.", role: "Design Student", text: "The portfolio reviews from industry pros completely changed how I present my work. I learned to focus on the problem statement before the UI.", rating: 5 },
-    { name: "Aisha M.", role: "Data Science Grad", text: "Reading real-world posts from data scientists gave me direction when I felt lost. The community here is so supportive.", rating: 4 },
-    { name: "David L.", role: "Product Management", text: "Found a mentor here who meets with me monthly. Best career investment ever. It's rare to find PMs willing to give up their time.", rating: 5 },
-    { name: "Elena R.", role: "Marketing Intern", text: "InterLink helped me understand what modern digital marketing actually looks like outside of textbooks.", rating: 5 },
-    { name: "Sam K.", role: "Frontend Dev", text: "The advice on open source contributions I read on here helped me land my first real gig.", rating: 4 }
+    { name: "Jessica T.", role: t("rev_jessica_role"), text: t("rev_jessica_text"), rating: 5 },
+    { name: "Michael B.", role: t("rev_michael_role"), text: t("rev_michael_text"), rating: 5 },
+    { name: "Aisha M.", role: t("rev_aisha_role"), text: t("rev_aisha_text"), rating: 4 },
+    { name: "David L.", role: t("rev_david_role"), text: t("rev_david_text"), rating: 5 },
+    { name: "Elena R.", role: t("rev_elena_role"), text: t("rev_elena_text"), rating: 5 },
+    { name: "Sam K.", role: t("rev_sam_role"), text: t("rev_sam_text"), rating: 4 }
   ];
 
   return (
@@ -17,9 +26,13 @@ export function StudentReviews() {
       <FloatingBlobs />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <Link href="/student#reviews" className="inline-flex items-center text-muted-foreground hover:text-primary transition-colors mb-8 group focus:outline-none">
+          <ArrowLeft className="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" />
+          {t("prof_back", "Back to Home")}
+        </Link>
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold font-display mb-4">Student <span className="text-gradient">Success Stories</span></h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">See how InterLink is helping students bridge the gap between education and industry.</p>
+          <h1 className="text-4xl md:text-5xl font-bold font-display mb-4">{t("rev_title")}</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{t("rev_subtitle")}</p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
