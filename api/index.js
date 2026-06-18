@@ -1,47 +1,34 @@
-const express = require("express");
-const cors = require("cors");
-const { pinoHttp } = require("pino-http");
-const pino = require("pino");
+// Minimal API handler using only Node.js built-ins
+module.exports = (req, res) => {
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,PATCH,DELETE,POST,PUT");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+  );
 
-// Create logger
-const logger = pino();
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
 
-// Create Express app
-const app = express();
+  // Health check
+  if (req.url === "/api/healthz") {
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json({ status: "ok" });
+    return;
+  }
 
-// Middleware
-app.use(
-  pinoHttp({
-    logger,
-    serializers: {
-      req(req) {
-        return {
-          id: req.id,
-          method: req.method,
-          url: req.url?.split("?")?.[0],
-        };
-      },
-      res(res) {
-        return {
-          statusCode: res.statusCode,
-        };
-      },
-    },
-  })
-);
+  // API root
+  if (req.url === "/api") {
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json({ message: "API is working", timestamp: new Date().toISOString() });
+    return;
+  }
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-// Health check endpoint
-app.get("/api/healthz", (req, res) => {
-  res.json({ status: "ok" });
-});
-
-// Basic API routes
-app.get("/api", (req, res) => {
-  res.json({ message: "API is working" });
-});
-
-module.exports = app;
+  // 404
+  res.setHeader("Content-Type", "application/json");
+  res.status(404).json({ error: "Not found" });
+};
