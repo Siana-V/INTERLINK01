@@ -1,12 +1,18 @@
 {
   "version": 2,
-  "buildCommand": "pnpm --filter @workspace/interlink run build && pnpm --filter @workspace/api-server run build",
-  "outputDirectory": "artifacts/interlink/public",
-  "functions": {
-    "api/index.ts": {
-      "runtime": "nodejs20.x"
+  "builds": [
+    {
+      "src": "artifacts/interlink/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "../../public"
+      }
+    },
+    {
+      "src": "api/index.ts",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.ts" },
     { "handle": "filesystem" },
