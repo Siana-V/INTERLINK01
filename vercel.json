@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "artifacts/interlink/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/public"
+      }
+    },
+    {
+      "src": "artifacts/api-server/src/index-vercel.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["artifacts/api-server/src/**"]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "artifacts/api-server/src/index-vercel.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "artifacts/interlink/dist/public/$1"
+    }
+  ]
+}
