@@ -3,14 +3,14 @@
   "buildCommand": "pnpm --filter @workspace/interlink run build && pnpm --filter @workspace/api-server run build",
   "installCommand": "pnpm install",
   "functions": {
-    "api/index.ts": {
+    "api/index.js": {
       "runtime": "nodejs20.x"
     }
   },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.ts"
+      "dest": "/api/index.js"
     },
     {
       "handle": "filesystem"
